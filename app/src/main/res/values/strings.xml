@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">ChenLu</string>
+    <string name="app_name">我们的故事</string>
+    <string name="note_list">我们的日记</string>
+    <string name="photo_list">我们的照片</string>
+    <string name="title_nav_main">我们的故事</string>
+    <string name="drawer_open">打开</string>
+    <string name="drawer_close">关闭</string>
+    <string name="about_us">关于我们</string>
 </resources>
