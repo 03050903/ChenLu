@@ -1,65 +1,39 @@
 package com.chenlu.base;
 
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.os.PersistableBundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity
+import com.chenlu.base.frag.MainFragment;
+
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
+    //显示菜单
     private DrawerLayout drawerLayout;
+    //菜单中显示的内容
     private NavigationView navigationView;
-    private Toolbar toolbar;
-    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar= (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
         navigationView= (NavigationView) findViewById(R.id.navigation_view);
         drawerLayout= (DrawerLayout) findViewById(R.id.dl_main);
-        drawerToggle=setupDrawerToggle();
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        drawerLayout.addDrawerListener(drawerToggle);
+        //设置菜单点击的时候执行的事件
         setupDrawerContent();
+        MainFragment fragment=new MainFragment();
+        fragment.setOnClickedListener(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_content,fragment).commit();
+
     }
 
-    @Override
-    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState)
-    {
-        super.onPostCreate(savedInstanceState, persistentState);
-        //同步状态
-        drawerToggle.syncState();
-    }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig)
-    {
-        super.onConfigurationChanged(newConfig);
-        //当配置信息改变的时候执行
-        drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    /**
-     * 创建一个ActionBarDrawerToggle
-     * @return
-     */
-    private ActionBarDrawerToggle setupDrawerToggle()
-    {
-        return new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawer_open,R.string.drawer_close);
-    }
 
     /**
      * 设置drawer中选项点击的时候显示的内容
@@ -92,20 +66,13 @@ public class MainActivity extends AppCompatActivity
         }
         //设置这个菜单被选中
         item.setChecked(true);
-        //设置这个页面显示的标题
-        setTitle(item.getTitle());
         //关闭Drawer
         drawerLayout.closeDrawers();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
+    public void onClick(View v)
     {
-        //使drawerToggle也可以处理onOptionsItemSelected事件
-        if (drawerToggle.onOptionsItemSelected(item))
-        {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        drawerLayout.openDrawer(GravityCompat.START);
     }
 }
